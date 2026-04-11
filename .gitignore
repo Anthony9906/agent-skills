@@ -1,0 +1,8 @@
+*
+!/.gitignore
+!/README.md
+!/registry.yaml
+!/.published/
+!/.published/**
+
+.DS_Store
