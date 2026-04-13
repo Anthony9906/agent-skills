@@ -3,16 +3,18 @@ name: global-skill-manager
 description: |
   Manage the shared global skill discovery directory by adding or removing
   symlinks for existing agent-owned skills, and publish shareable copies for
-  version control.
+  version control. It can also clone the shared skills repo and pull updates.
 
   Triggers when user mentions:
   - "add this skill to global skills"
   - "publish this skill to the global skills directory"
   - "remove this skill from global skills"
+  - "clone the shared skills repo"
+  - "pull the shared skills repo"
 ---
 
 Use this skill only when the user gives an explicit instruction to add, remove,
-publish, or unpublish a skill in the global skills directory.
+publish, unpublish, clone, or pull a skill in the global skills directory.
 
 ## Purpose
 
@@ -23,7 +25,8 @@ The global skills directory has two parts:
 
 The discovery layer contains symlinks to real skills that remain in each agent's
 own skills directory. The published directory contains real copies for Git-based
-sharing and version control.
+sharing and version control. The same repo can also be cloned and updated from a
+remote.
 
 - Discovery directory: `~/agent-skills`
 - Published directory: `~/agent-skills/.published`
@@ -36,6 +39,8 @@ skill into the discovery directory root.
 
 - Only act on an explicit user instruction to add, remove, publish, or
   unpublish a skill.
+- Only act on an explicit user instruction to clone the shared skills repo,
+  or pull the shared skills repo.
 - In `~/agent-skills`, only create or remove symlinks and update
   `registry.yaml`.
 - Never copy a skill directory or any of its files into `~/agent-skills`.
@@ -47,6 +52,8 @@ skill into the discovery directory root.
   before making any change.
 - If a target name already exists in `~/agent-skills/.published`, ask the user
   what to do before making any change.
+- If the clone target already exists, ask the user what to do before making any
+  change.
 - If it is unclear which source skill the user means, ask one short clarifying
   question.
 
@@ -136,6 +143,46 @@ Example unpublish command:
 rm -r "/Users/anthony/agent-skills/.published/skill-name"
 ```
 
+## Clone The Shared Skills Repo
+
+Use this when the user explicitly asks to set up the shared skills repo on a
+machine for the first time.
+
+1. Confirm the user explicitly asked to clone the shared repo.
+2. Identify the remote URL and target directory. By default, use
+   `~/agent-skills`.
+3. If the target directory already exists, stop and ask the user what to do.
+4. Clone the repo into the target directory.
+5. After clone, tell the user that published skills live under
+   `~/agent-skills/.published` and can be enabled by creating symlinks in
+   `~/agent-skills/`.
+
+Example clone command:
+
+```bash
+git clone "https://github.com/example/agent-skills.git" "/Users/anthony/agent-skills"
+```
+
+## Pull Shared Skills Repo Updates
+
+Use this when the user explicitly asks to update an existing shared skills repo
+from its GitHub remote.
+
+1. Confirm the user explicitly asked to pull or update the shared repo.
+2. Verify that `~/agent-skills` is an existing git repository.
+3. Run `git status` and check for local changes.
+4. If there are uncommitted local changes, stop and ask the user how to proceed.
+5. Run `git pull` on the current branch.
+6. After pull, tell the user to enable any newly published skills by creating
+   symlinks in `~/agent-skills/` if needed.
+
+Example commands:
+
+```bash
+git status --short
+git pull
+```
+
 ## Safety Checks
 
 Before changing anything, verify all of the following:
@@ -148,6 +195,8 @@ Before changing anything, verify all of the following:
   to resolve the conflict.
 - Registration only affects the symlink and the metadata file.
 - Publishing only affects `~/agent-skills/.published/<name>`.
+- Cloning only affects the requested target directory.
+- Pulling only affects the existing shared repo checkout.
 
 ## Notes
 

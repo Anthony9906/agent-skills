@@ -6,12 +6,14 @@ Shared agent skills repository.
 
 - `registry.yaml`: minimal metadata for globally registered skills
 - `.published/`: Git-tracked skill copies for sharing and version control
-- repo root symlinks: local discovery-only entries used on one machine
+- `global-skill-manager`: tracked bootstrap symlink to the published manager skill
+- other repo root symlinks: local discovery-only entries used on one machine
 
 ## Rules
 
 - Real working skills stay in each agent's own skills directory.
-- Root-level global skills are symlinks for local discovery and are not tracked by Git.
+- `global-skill-manager` is tracked as a relative symlink so new clones can discover it immediately.
+- Other root-level global skills are local discovery symlinks and are not tracked by Git.
 - Shareable skills are copied into `.published/` and committed to this repository.
 - `registry.yaml` records only `source` and `updated_at`.
 
