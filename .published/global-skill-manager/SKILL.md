@@ -69,7 +69,6 @@ skill into the discovery directory root.
 7. Create a symlink from `~/agent-skills/<name>` to the source skill directory.
 8. Update `~/agent-skills/registry.yaml` with:
    - skill name
-   - source path
    - updated_at in ISO 8601 format
 
 Example symlink command:
@@ -83,7 +82,6 @@ Example metadata entry:
 ```yaml
 skills:
   skill-name:
-    source: /absolute/path/to/source-skill
     updated_at: 2026-04-11T14:30:00Z
 ```
 
@@ -204,6 +202,6 @@ Before changing anything, verify all of the following:
   user wants to publish them globally.
 - The global directory is not a source of truth. It is only a shared discovery
   index.
-- Keep registry entries minimal. Only record `source` and `updated_at`.
+- Keep registry entries minimal. Only record `updated_at`.
 - `~/agent-skills/.published` is not part of skill discovery. It exists only to
   store shareable copies for Git and team sync.

@@ -15,9 +15,10 @@ Shared agent skills repository.
 - `global-skill-manager` is tracked as a relative symlink so new clones can discover it immediately.
 - Other root-level global skills are local discovery symlinks and are not tracked by Git.
 - Shareable skills are copied into `.published/` and committed to this repository.
-- `registry.yaml` records only `source` and `updated_at`.
+- `registry.yaml` records only `updated_at`.
 
 ## Team Use
 
-Clone this repository, then copy a skill from `.published/<skill-name>/` into the
-target agent's local skills directory when you want to use it.
+Clone this repository, then use skills discovered from `~/agent-skills`.
+Additional published skills can be enabled by adding root-level symlinks that
+point to `.published/<skill-name>`.
