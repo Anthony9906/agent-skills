@@ -11,6 +11,10 @@ skills:
     updated_at: 2026-04-14T05:50:41Z
   pdf:
     updated_at: 2026-04-14T05:50:41Z
+  tavily-extract:
+    updated_at: 2026-04-14T05:50:41Z
+  tavily-search:
+    updated_at: 2026-04-14T05:50:41Z
   skill-creator:
     updated_at: 2026-04-14T05:50:41Z
   slides:
