@@ -2,8 +2,8 @@
 name: global-skill-manager
 description: |
   Manage the shared global skill discovery directory by adding or removing
-  symlinks for published shared skills. It can also clone the shared skills repo
-  and pull updates.
+  shared skills in place. It can also clone the shared skills repo and pull
+  updates.
 
   Triggers when user mentions:
   - "add this skill to global skills"
@@ -18,20 +18,12 @@ clone, or pull a skill in the global skills directory.
 
 ## Purpose
 
-The global skills directory has two parts:
+The global skills directory is the shared discovery location.
 
-- Discovery layer: `~/agent-skills`
-- Published copies: `~/agent-skills/.published`
-
-The discovery layer contains symlinks that point to published shared skills. The
-published directory contains admin-managed shared copies. The same repo can also
-be cloned and updated from a remote.
-
-- Discovery directory: `~/agent-skills`
-- Published directory: `~/agent-skills/.published`
+- Global directory: `~/agent-skills`
 - Metadata file: `~/agent-skills/registry.yaml`
 
-Never copy a skill into the discovery directory root.
+Shared skills live directly under `~/agent-skills/<skill-name>/`.
 
 ## Hard Rules
 
@@ -39,38 +31,35 @@ Never copy a skill into the discovery directory root.
   local global discovery.
 - Only act on an explicit user instruction to clone the shared skills repo,
   or pull the shared skills repo.
-- In `~/agent-skills`, only create or remove symlinks and update
-  `registry.yaml`.
-- Never copy a skill directory or any of its files into `~/agent-skills`.
-- Never create, delete, or modify entries under `~/agent-skills/.published`.
-- Never rewrite, edit, or move a skill in the discovery directory.
-- Treat `~/agent-skills/.published` as admin-managed and read-only.
+- In `~/agent-skills`, only create, remove, or update skill directories when
+  the user explicitly asks.
+- Shared skills should live directly in `~/agent-skills/<skill-name>/`.
+- Do not redesign the global skill layout unless the user explicitly asks.
 - If a target name already exists in `~/agent-skills`, ask the user what to do
   before making any change.
 - If the clone target already exists, ask the user what to do before making any
   change.
-- If it is unclear which published skill the user means, ask one short
-  clarifying question.
+- If it is unclear which shared skill the user means, ask one short clarifying
+  question.
 
 ## Register A Skill In Global Discovery
 
 1. Confirm the user explicitly asked to add or enable a shared skill globally.
-2. Identify the published skill directory under `~/agent-skills/.published`.
-3. Verify the published directory contains `SKILL.md`.
-4. Choose the global link name. By default, use the published folder name.
+2. Identify the source skill directory the user wants to add.
+3. Verify the source skill directory contains `SKILL.md`.
+4. Choose the global skill name. By default, use the source folder name.
 5. Check whether `~/agent-skills/<name>` already exists.
 6. If it exists, stop and ask the user whether to keep the existing one, replace
    it, or use a different name.
-7. Create a symlink from `~/agent-skills/<name>` to the published skill
-   directory.
+7. Create or copy the skill directory into `~/agent-skills/<name>`.
 8. Update `~/agent-skills/registry.yaml` with:
    - skill name
    - updated_at in ISO 8601 format
 
-Example symlink command:
+Example copy command:
 
 ```bash
-ln -s "/Users/anthony/agent-skills/.published/skill-name" "/Users/anthony/agent-skills/skill-name"
+cp -R "/path/to/skill-name" "/Users/anthony/agent-skills/skill-name"
 ```
 
 Example metadata entry:
@@ -86,14 +75,13 @@ skills:
 1. Confirm the user explicitly asked to remove a skill from global skills.
 2. Check whether `~/agent-skills/<name>` exists.
 3. If the entry does not exist, tell the user and stop.
-4. Remove only the symlink in `~/agent-skills`.
+4. Remove the skill directory in `~/agent-skills`.
 5. Remove that skill entry from `~/agent-skills/registry.yaml`.
-6. Do not delete or modify the published skill directory.
 
 Example remove command:
 
 ```bash
-rm "/Users/anthony/agent-skills/skill-name"
+rm -rf "/Users/anthony/agent-skills/skill-name"
 ```
 
 ## Clone The Shared Skills Repo
@@ -106,9 +94,8 @@ machine for the first time.
    `~/agent-skills`.
 3. If the target directory already exists, stop and ask the user what to do.
 4. Clone the repo into the target directory.
-5. After clone, tell the user that published skills live under
-   `~/agent-skills/.published` and can be enabled by creating symlinks in
-   `~/agent-skills/`.
+5. After clone, tell the user that shared skills are discovered directly from
+   `~/agent-skills/<skill-name>/`.
 
 Example clone command:
 
@@ -126,8 +113,8 @@ from its GitHub remote.
 3. Run `git status` and check for local changes.
 4. If there are uncommitted local changes, stop and ask the user how to proceed.
 5. Run `git pull` on the current branch.
-6. After pull, tell the user to enable any newly published skills by creating
-   symlinks in `~/agent-skills/` if needed.
+6. After pull, tell the user that any newly pulled skill directories under
+   `~/agent-skills/` are immediately discoverable.
 
 Example commands:
 
@@ -140,18 +127,16 @@ git pull
 
 Before changing anything, verify all of the following:
 
-- The published path exists.
-- The published path is a skill directory with `SKILL.md`.
+- The source path exists.
+- The source path is a skill directory with `SKILL.md`.
 - The global path does not already conflict, unless the user has chosen how to
   resolve the conflict.
-- Registration only affects the symlink and the metadata file.
+- Registration only affects the skill directory and the metadata file.
 - Cloning only affects the requested target directory.
 - Pulling only affects the existing shared repo checkout.
 
 ## Notes
 
-- The global directory is not a source of truth. It is only a shared discovery
-  index.
+- The global directory is both the shared storage location and the discovery
+  location for global skills.
 - Keep registry entries minimal. Only record `updated_at`.
-- `~/agent-skills/.published` is not part of skill discovery. It exists only to
-  store admin-managed shared copies for Git and team sync.

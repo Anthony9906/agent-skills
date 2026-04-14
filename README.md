@@ -5,20 +5,18 @@ Shared agent skills repository.
 ## Structure
 
 - `registry.yaml`: minimal metadata for globally registered skills
-- `.published/`: Git-tracked skill copies for sharing and version control
-- `global-skill-manager`: tracked bootstrap symlink to the published manager skill
-- other repo root symlinks: local discovery-only entries used on one machine
+- `global-skill-manager/`: a global skill directory with `SKILL.md`
+- other root skill directories: shared skills discovered directly from `~/agent-skills/<skill-name>/`
 
 ## Rules
 
 - Real working skills stay in each agent's own skills directory.
-- `global-skill-manager` is tracked as a relative symlink so new clones can discover it immediately.
-- Other root-level global skills are local discovery symlinks and are not tracked by Git.
-- Shareable skills are copied into `.published/` and committed to this repository.
+- Shared global skills live directly in the repository root as normal directories.
+- Each shared skill should use the layout `~/agent-skills/<skill-name>/SKILL.md`.
 - `registry.yaml` records only `updated_at`.
 
 ## Team Use
 
 Clone this repository, then use skills discovered from `~/agent-skills`.
-Additional published skills can be enabled by adding root-level symlinks that
-point to `.published/<skill-name>`.
+Add a shared skill by creating a new directory at `~/agent-skills/<skill-name>/`
+with a `SKILL.md` file.

@@ -2,8 +2,7 @@
 !/.gitignore
 !/README.md
 !/registry.yaml
-!/global-skill-manager
-!/.published/
-!/.published/**
+!/global-skill-manager/
+!/global-skill-manager/**
 
 .DS_Store
