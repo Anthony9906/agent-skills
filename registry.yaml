@@ -1,3 +1,19 @@
 skills:
-  global-skill-manager:
-    updated_at: 2026-04-11T03:39:20Z
+  agent-browser:
+    updated_at: 2026-04-14T05:50:41Z
+  cylinder-selection:
+    updated_at: 2026-04-14T05:50:41Z
+  dispensing-bom:
+    updated_at: 2026-04-14T05:50:41Z
+  doc:
+    updated_at: 2026-04-14T05:50:41Z
+  memory-lite:
+    updated_at: 2026-04-14T05:50:41Z
+  pdf:
+    updated_at: 2026-04-14T05:50:41Z
+  skill-creator:
+    updated_at: 2026-04-14T05:50:41Z
+  slides:
+    updated_at: 2026-04-14T05:50:41Z
+  spreadsheet:
+    updated_at: 2026-04-14T05:50:41Z
